@@ -24,5 +24,5 @@ class RegexException(ExceptionBase):
 
 addon_name = Regex('^[a-zA-Z0-9_]+$')
 module_set_id = Regex('^[a-z0-9_]+$')
-module_set_name = Regex('^[a-zA-Z0-9-_ .]+$')
-module_set_description = Regex('^[a-zA-Z0-9-_ .]+$')
+module_set_name = Regex('^[a-zA-Z0-9-_ ./]+$')
+module_set_description = Regex('^[a-zA-Z0-9-_ ,./]+$')
