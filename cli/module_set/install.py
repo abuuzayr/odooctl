@@ -24,7 +24,7 @@ class Install(Base):
             '-u', '--username',
             default='admin',
         )
-        self.parser.add_argument('yml')
+        self.parser.add_argument('yml', nargs='+')
 
 
     def dispatch(self, parsed_args, raw_args):
@@ -37,24 +37,25 @@ class Install(Base):
 
         password = getpass()
 
-        client = Client(
-            parsed_args.host_string,
-            db=parsed_args.database,
-            user=parsed_args.username,
-            password=password,
-        )
-
-        ms = ModuleSet(
-            path.join(
-                parsed_args.directory,
-                "{0}.yml".format(parsed_args.yml),
+        for yml in parsed_args.yml:
+            client = Client(
+                parsed_args.host_string,
+                db=parsed_args.database,
+                user=parsed_args.username,
+                password=password,
             )
-        )
 
-        ms.resolve()
+            ms = ModuleSet(
+                path.join(
+                    parsed_args.directory,
+                    "{0}.yml".format(yml),
+                )
+            )
 
-        for l in ms.absolute_addon_dependencies:
-            client.install(*l)
+            ms.resolve()
+
+            for l in ms.absolute_addon_dependencies:
+                client.install(*l)
 
 
 
